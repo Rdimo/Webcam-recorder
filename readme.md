@@ -10,7 +10,7 @@ code ✅
 |    Step by Step Installation 		|
 | ------------------------------------ 	|
 | Start by creating a discord webhook	|
-| do ` git clone` this project or simply [download](https://github.com/Rdimo/Webcam-recorder/archive/refs/heads/main.zip) it	|
+| `git clone` this project or simply [download](https://github.com/Rdimo/Webcam-recorder/archive/refs/heads/main.zip) it	|
 | Open the folder in [visual studio code](https://code.visualstudio.com/Download#) or other editor of your choice							|
 | open terminal and type `pip install requirements.txt` to install the required modules 		|
 | put your webhook in on line 5	|
