@@ -3,7 +3,7 @@ from urllib.request import Request, urlopen
 from json import dumps
 
 webhook_url = "YOUR_WEBHOOK_HERE" #your webhook url
-avatar_url = "https://imgur.com/QVCVjM4" #image link for your webhook
+avatar_url = "https://i.imgur.com/QVCVjM4.png" #image link for your webhook
 
 headers = {
     'Content-Type': 'application/json',
