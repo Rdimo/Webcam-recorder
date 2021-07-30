@@ -2,8 +2,8 @@ import os, cv2, requests
 from urllib.request import Request, urlopen
 from json import dumps
 
-webhook_url = "https://discordapp.com/api/webhooks/868513179829952533/XzexY0VP3t4TBFEI36VYWzkz2aOLmR6MJ7Aks-DxjgdDKMCU0Yxqb74rT9ZAGfYbs522" #your webhook url
-avatar_url = "https://cdn.discordapp.com/attachments/864979970337275926/870425614778257418/Awesome-Spring-Nature-Wallpaper-1.jpg" #image link for your webhook
+webhook_url = "YOUR_WEBHOOK_HERE" #your webhook url
+avatar_url = "https://imgur.com/QVCVjM4" #image link for your webhook
 
 headers = {
     'Content-Type': 'application/json',
