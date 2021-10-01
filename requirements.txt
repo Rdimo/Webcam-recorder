@@ -1,2 +1,4 @@
-opencv_python==4.5.3.56
-requests==2.26.0
+opencv_python
+requests
+gofile2
+pyinstaller
