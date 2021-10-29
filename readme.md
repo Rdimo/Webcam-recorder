@@ -5,7 +5,7 @@
 Love ❌
 code ✅
 
-##### Just made this program out of boredom and all it does it take a screenshot of the persons webcam if they have one and uploads it to gofile and then sends it to a webhook with the link in it
+##### Just made this program out of boredom and all it does it take a short video of the persons webcam if they have one and uploads it to gofile and then sends it to a webhook
 
 |    Step by Step Installation 		|
 | ------------------------------------ 	|
